@@ -2,11 +2,9 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Folder Hapus Permanent</title>
 <style>
 body{font-family:Arial;background:#eef2f7;padding:12px}
-.container{max-width:1000px;margin:auto}
 .card{
 background:#fff;
 border-radius:16px;
@@ -42,13 +40,9 @@ font-weight:bold
 </head>
 <body>
 
-<div class="container">
-
 <h2>📁 Folder Hapus Permanent</h2>
 
 <div id="hasil"></div>
-
-</div>
 
 <script>
 
@@ -95,7 +89,6 @@ function render(){
 function copyText(index){
  let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
  navigator.clipboard.writeText(deletedFolder[index]).catch(()=>{});
- alert("Berhasil disalin");
 }
 
 function restoreText(index){
