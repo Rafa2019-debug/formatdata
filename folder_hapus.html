@@ -53,12 +53,10 @@ font-weight:bold
 <script>
 
 function autoHeight(){
-
  document.querySelectorAll("textarea").forEach(el=>{
    el.style.height="auto";
    el.style.height=el.scrollHeight+"px";
  });
-
 }
 
 function render(){
@@ -70,9 +68,7 @@ function render(){
  hasil.innerHTML="";
 
  if(deletedFolder.length===0){
-
     hasil.innerHTML='<div class="card">Folder kosong</div>';
-
     return;
  }
 
@@ -94,23 +90,17 @@ function render(){
  });
 
  autoHeight();
-
 }
 
 function copyText(index){
-
  let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
-
  navigator.clipboard.writeText(deletedFolder[index]).catch(()=>{});
-
  alert("Berhasil disalin");
-
 }
 
 function restoreText(index){
 
  let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
-
  let cards = JSON.parse(localStorage.getItem("cardsData")||"[]");
 
  cards.push(deletedFolder[index]);
@@ -118,7 +108,6 @@ function restoreText(index){
  localStorage.setItem("cardsData",JSON.stringify(cards));
 
  alert("Berhasil restore");
-
 }
 
 render();

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ByDataKu Full Normal</title>
+<title>ByDataKu Full Final Permanent</title>
 <style>
 body{font-family:Arial;background:#eef2f7;padding:12px}
 .container{max-width:1000px;margin:auto}
@@ -37,7 +37,6 @@ font-weight:bold
 .copy{background:#198754}
 .save{background:#1565d8}
 .delete{background:#dc3545}
-
 .card{
 background:#fff;
 border-radius:16px;
@@ -45,19 +44,16 @@ padding:14px;
 margin-top:15px;
 box-shadow:0 2px 8px rgba(0,0,0,.08)
 }
-
 .tools{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:10px
 }
-
 .lefttools{
 display:flex;
 gap:6px
 }
-
 .edit-area{
 width:100%;
 border:none;
@@ -70,7 +66,6 @@ background:transparent;
 font-family:monospace;
 white-space:pre-wrap
 }
-
 #info{
 margin-top:12px;
 font-size:13px;
@@ -82,7 +77,7 @@ font-weight:bold
 
 <div class="container">
 
-<h2>❤️ ByDataKu Full Normal</h2>
+<h2>❤️ ByDataKu Full Final Permanent</h2>
 
 <button class="tab" onclick="setMode('tab')">🔵 Mode TAB</button>
 <button class="bpjs" onclick="setMode('bpjs')">🟢 Mode BPJS</button>
@@ -107,6 +102,11 @@ font-weight:bold
 
 let mode="tab";
 let deletedData=null;
+let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
+
+function saveDeletedFolder(){
+ localStorage.setItem("deletedFolder",JSON.stringify(deletedFolder));
+}
 
 function setMode(m){
  mode=m;
@@ -116,19 +116,15 @@ function setMode(m){
 
 function minusBulan(t){
  if(!t||!t.includes("-")) return t;
-
  let p=t.split("-");
  let d=p[0];
  let m=parseInt(p[1]);
  let y=parseInt(p[2]);
-
  m--;
-
  if(m<1){
    m=12;
    y--;
  }
-
  return d+"-"+String(m).padStart(2,"0")+"-"+y;
 }
 
@@ -145,60 +141,44 @@ function saveCards(cards){
 }
 
 window.onload=function(){
-
  mode=localStorage.getItem("modeData")||"tab";
-
  document.getElementById("modeInfo").innerHTML="<b>Mode aktif: "+mode.toUpperCase()+"</b>";
-
  document.getElementById("inputData").value=localStorage.getItem("inputData")||"";
-
  renderCards();
-
  document.getElementById("info").innerHTML=localStorage.getItem("infoText")||"";
-
 }
 
 function renderCards(){
-
  document.getElementById("hasil").innerHTML="";
-
  const cards=getCards();
 
  cards.forEach((text,index)=>{
-
    const card=document.createElement("div");
-
    card.className="card";
 
    card.innerHTML=`
    <div class="tools">
-
    <div class="lefttools">
       <button class="copy" onclick="copyText(${index})">📋 Salin</button>
       <button class="save" onclick="simpanKoreksi()">💾 Simpan</button>
    </div>
-
    <button class="delete" onclick="hapusCard(${index})">🗑 Hapus</button>
-
    </div>
 
    <textarea id="text-${index}" class="edit-area">${text}</textarea>
    `;
 
    document.getElementById("hasil").appendChild(card);
-
  });
 
  autoHeight();
 }
 
 function autoHeight(){
-
  document.querySelectorAll(".edit-area").forEach(el=>{
    el.style.height="auto";
    el.style.height=el.scrollHeight+"px";
  });
-
 }
 
 function prosesSemua(){
@@ -237,7 +217,6 @@ function prosesSemua(){
      const akhir=dates[dates.length-1]||"";
 
      const genderIndex=data.findIndex(x=>x==="L"||x==="P");
-
      const gender=data[genderIndex]==="L"?"PRIA":"WANITA";
 
      const jumlah=data[genderIndex+1]||"1";
@@ -256,22 +235,17 @@ function prosesSemua(){
      const nikIndex=data.indexOf(nik);
 
      for(let i=nikIndex+1;i<data.length;i++){
-
        if(/^\d{2}-\d{2}-\d{4}$/.test(data[i])) break;
-
        nama += data[i]+" ";
      }
 
      nama=nama.trim();
 
      let perusahaan="";
-
      const nominalIndex=data.indexOf(nominalRaw);
 
      for(let i=nominalIndex+1;i<data.length;i++){
-
        if(/^\d{2}-\d{2}-\d{4}$/.test(data[i])) break;
-
        perusahaan += data[i]+" ";
      }
 
@@ -307,7 +281,8 @@ ${nama}`;
 
      if(!nik) return;
 
-     let nama=(b.match(/\n([A-Z ]+)\n(?:PEREMPUAN|LAKI-LAKI)/)||[])[1]||"";
+     // FIX NAMA TITIK DAN DASH
+     let nama=(b.match(/\n([A-Za-z .'-]+)\n(?:PEREMPUAN|LAKI-LAKI)/)||[])[1]||"";
 
      let gender=b.includes("PEREMPUAN")?"WANITA":"PRIA";
 
@@ -367,44 +342,32 @@ ${nama}`;
  localStorage.setItem("infoText",document.getElementById("info").innerHTML);
 
  renderCards();
-
 }
 
 function simpanKoreksi(){
-
  let cards=[];
-
  document.querySelectorAll(".edit-area").forEach(x=>{
    cards.push(x.value);
  });
-
  saveCards(cards);
 }
 
 function copyText(index){
-
  const val=document.getElementById("text-"+index).value;
-
  navigator.clipboard.writeText(val).catch(()=>{});
-
  alert("Berhasil disalin");
 }
 
 function copySemua(){
-
  let gabung="";
-
  document.querySelectorAll(".edit-area").forEach(x=>{
-   gabung += x.value + "\\n\\n====================\\n\\n";
+   gabung += x.value + "\n\n====================\n\n";
  });
-
  navigator.clipboard.writeText(gabung).catch(()=>{});
-
  alert("Berhasil disalin");
 }
 
-function hapusCard(index){
-
+const oldHapusCard = function(index){
  let cards=getCards();
 
  deletedData={
@@ -422,8 +385,14 @@ function hapusCard(index){
  localStorage.setItem("infoText",document.getElementById("info").innerHTML);
 }
 
-function restoreCard(){
+function hapusCard(index){
+ let cards=getCards();
+ deletedFolder.push(cards[index]);
+ saveDeletedFolder();
+ oldHapusCard(index);
+}
 
+function restoreCard(){
  if(!deletedData){
    alert("Tidak ada restore");
    return;
@@ -444,74 +413,18 @@ function restoreCard(){
 }
 
 function downloadTXT(){
-
  let gabung="";
-
  document.querySelectorAll(".edit-area").forEach(x=>{
-   gabung += x.value + "\\n\\n====================\\n\\n";
+   gabung += x.value + "\n\n====================\n\n";
  });
 
  const blob=new Blob([gabung],{type:"text/plain"});
-
  const a=document.createElement("a");
-
  a.href=URL.createObjectURL(blob);
-
  a.download="hasil_bydataku.txt";
-
  a.click();
 }
 
-function hapusRiwayat(){
-
- localStorage.clear();
-
- document.getElementById("hasil").innerHTML="";
- document.getElementById("inputData").value="";
- document.getElementById("info").innerHTML="";
-
- alert("Riwayat dihapus");
-}
-
-// autosave tanpa notif
-document.addEventListener("input",function(e){
-
- if(
-   e.target.classList.contains("edit-area") ||
-   e.target.id==="inputData"
- ){
-
-   simpanKoreksi();
-
-   autoHeight();
- }
-
-});
-
-
-// folder hapus permanent
-let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
-
-function saveDeletedFolder(){
- localStorage.setItem("deletedFolder",JSON.stringify(deletedFolder));
-}
-
-// override hapusCard
-const oldHapusCard = hapusCard;
-
-hapusCard = function(index){
-
- let cards=getCards();
-
- deletedFolder.push(cards[index]);
-
- saveDeletedFolder();
-
- oldHapusCard(index);
-
-}
-
-// hapus riwayat tanpa hapus folder
 function hapusRiwayat(){
 
  const deletedPermanent = localStorage.getItem("deletedFolder");
@@ -530,10 +443,18 @@ function hapusRiwayat(){
 
 }
 
+document.addEventListener("input",function(e){
+ if(
+   e.target.classList.contains("edit-area") ||
+   e.target.id==="inputData"
+ ){
+   simpanKoreksi();
+   autoHeight();
+ }
+});
+
 window.addEventListener("beforeunload",function(){
-
  simpanKoreksi();
-
 });
 
 </script>
