@@ -489,12 +489,14 @@ document.addEventListener("input",function(e){
 });
 
 
+// folder hapus permanent
 let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
 
 function saveDeletedFolder(){
  localStorage.setItem("deletedFolder",JSON.stringify(deletedFolder));
 }
 
+// override hapusCard
 const oldHapusCard = hapusCard;
 
 hapusCard = function(index){
@@ -509,6 +511,7 @@ hapusCard = function(index){
 
 }
 
+// hapus riwayat tanpa hapus folder
 function hapusRiwayat(){
 
  const deletedPermanent = localStorage.getItem("deletedFolder");
