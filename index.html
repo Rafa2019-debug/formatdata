@@ -318,7 +318,7 @@ ${nama}`;
 
      let jumlah=(b.match(/JUMLAH KPJ:\s*(\d+)/i)||[])[1]||"1";
 
-     let kpj=(b.match(/\b19\d{9}\b/)||[])[0]||"";
+     let kpj=(b.match(/\b\d{11}\b/)||[])[0]||"";
 
      let saldo=(b.match(/Rp([0-9.]+)/i)||[])[1]||"0";
 
@@ -489,14 +489,12 @@ document.addEventListener("input",function(e){
 });
 
 
-// folder hapus permanent
 let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
 
 function saveDeletedFolder(){
  localStorage.setItem("deletedFolder",JSON.stringify(deletedFolder));
 }
 
-// override hapusCard agar masuk folder permanent
 const oldHapusCard = hapusCard;
 
 hapusCard = function(index){
@@ -508,6 +506,24 @@ hapusCard = function(index){
  saveDeletedFolder();
 
  oldHapusCard(index);
+
+}
+
+function hapusRiwayat(){
+
+ const deletedPermanent = localStorage.getItem("deletedFolder");
+
+ localStorage.clear();
+
+ if(deletedPermanent){
+    localStorage.setItem("deletedFolder", deletedPermanent);
+ }
+
+ document.getElementById("hasil").innerHTML="";
+ document.getElementById("inputData").value="";
+ document.getElementById("info").innerHTML="";
+
+ alert("Riwayat dihapus");
 
 }
 

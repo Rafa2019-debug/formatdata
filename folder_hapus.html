@@ -1,129 +1,45 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Folder Hapus Permanent</title>
+<html><head><meta charset="UTF-8"><title>Folder Hapus</title>
 <style>
 body{font-family:Arial;background:#eef2f7;padding:12px}
-.container{max-width:1000px;margin:auto}
-.card{
-background:#fff;
-border-radius:16px;
-padding:14px;
-margin-top:15px;
-box-shadow:0 2px 8px rgba(0,0,0,.08)
-}
-textarea{
-width:100%;
-border:none;
-outline:none;
-resize:none;
-overflow:hidden;
-font-size:12px;
-line-height:1.6;
-background:transparent;
-font-family:monospace;
-white-space:pre-wrap
-}
-button{
-padding:10px 14px;
-margin:5px 5px 0 0;
-border:none;
-border-radius:10px;
-font-size:12px;
-color:#fff;
-cursor:pointer;
-font-weight:bold
-}
-.restore{background:#16a34a}
-.copy{background:#198754}
-</style>
-</head>
+.card{background:#fff;padding:14px;border-radius:16px;margin-top:15px}
+textarea{width:100%;border:none;font-family:monospace}
+button{padding:10px 14px;border:none;border-radius:10px;color:#fff;font-weight:bold}
+.restore{background:#16a34a}.copy{background:#198754}
+</style></head>
 <body>
-
-<div class="container">
-
 <h2>📁 Folder Hapus Permanent</h2>
-
 <div id="hasil"></div>
-
-</div>
-
 <script>
-
-function autoHeight(){
-
- document.querySelectorAll("textarea").forEach(el=>{
-   el.style.height="auto";
-   el.style.height=el.scrollHeight+"px";
- });
-
-}
-
 function render(){
-
- let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
-
+ let deletedFolder=JSON.parse(localStorage.getItem("deletedFolder")||"[]");
  let hasil=document.getElementById("hasil");
-
  hasil.innerHTML="";
-
  if(deletedFolder.length===0){
-
-    hasil.innerHTML='<div class="card">Folder kosong</div>';
-
-    return;
+   hasil.innerHTML='<div class="card">Folder kosong</div>';
+   return;
  }
-
  deletedFolder.forEach((text,index)=>{
-
-    const card=document.createElement("div");
-
-    card.className="card";
-
-    card.innerHTML=`
-    <button class="copy" onclick="copyText(${index})">📋 Salin</button>
-    <button class="restore" onclick="restoreText(${index})">↩ Restore</button>
-
-    <textarea>${text}</textarea>
-    `;
-
-    hasil.appendChild(card);
-
+   const div=document.createElement("div");
+   div.className="card";
+   div.innerHTML=`
+   <button class="copy" onclick="copyText(${index})">📋 Salin</button>
+   <button class="restore" onclick="restoreText(${index})">↩ Restore</button>
+   <textarea>${text}</textarea>`;
+   hasil.appendChild(div);
  });
-
- autoHeight();
-
 }
-
 function copyText(index){
-
- let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
-
- navigator.clipboard.writeText(deletedFolder[index]).catch(()=>{});
-
- alert("Berhasil disalin");
-
+ let deletedFolder=JSON.parse(localStorage.getItem("deletedFolder")||"[]");
+ navigator.clipboard.writeText(deletedFolder[index]);
 }
-
 function restoreText(index){
-
- let deletedFolder = JSON.parse(localStorage.getItem("deletedFolder")||"[]");
-
- let cards = JSON.parse(localStorage.getItem("cardsData")||"[]");
-
+ let deletedFolder=JSON.parse(localStorage.getItem("deletedFolder")||"[]");
+ let cards=JSON.parse(localStorage.getItem("cardsData")||"[]");
  cards.push(deletedFolder[index]);
-
  localStorage.setItem("cardsData",JSON.stringify(cards));
-
  alert("Berhasil restore");
-
 }
-
 render();
-
 </script>
-
-</body>
-</html>
+</body></html>
